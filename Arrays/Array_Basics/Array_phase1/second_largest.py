@@ -6,11 +6,14 @@ def fun(arr):
             if i>largest:
                 second_largest=largest
                 largest=i
-            if i<largest and i>second_largest:
+            elif i<largest and i>second_largest:
                  second_largest=i
+        if second_largest==float('-inf'):
+             return None 
         return second_largest
 # arr = [4, 7, 2, 9, 8]
-arr = [-5, -2, -8]
+# arr = [-5, -2, -8]
+arr=[5,5,5]
 print(fun(arr))
 # sol=Solution()
 # arr=[4, 7, 2, 9, 5]
