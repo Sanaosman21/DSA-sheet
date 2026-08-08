@@ -9,3 +9,5 @@ arr=[1, 1, 2, 2, 3]
 k=fun(arr)
 print(k)
 print("unique elements are",arr[:k])
+
+#here i is the writing pointer and j is the reading pointer 

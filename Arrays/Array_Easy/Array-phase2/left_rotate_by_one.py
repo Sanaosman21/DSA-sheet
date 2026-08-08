@@ -10,3 +10,18 @@ def fun(nums):
 nums=[1,2,3,4,5]
 print(fun(nums))
 
+# ⭐ Pattern Recognition
+
+# Whenever you see:
+
+# Rotate by One
+# Shift Left
+# Shift Right
+
+# Think:
+
+# Save the element that will be overwritten.
+# Shift remaining elements.
+# Put the saved element in its final position.
+
+# This is the core idea behind rotation problems.

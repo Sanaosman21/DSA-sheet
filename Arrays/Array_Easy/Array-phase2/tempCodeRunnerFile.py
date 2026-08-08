@@ -1,0 +1,1 @@
+def right_rotate(nums,k):
