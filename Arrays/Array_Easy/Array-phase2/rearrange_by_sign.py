@@ -1,22 +1,22 @@
 #brute force 
-# def fun(nums):
-#     n=len(nums)
-#     pos=[]
-#     neg=[]
-#     for i in range(len(nums)):#separating pos and neg numbers
-#         if nums[i]>=0:
-#             pos.append(nums[i])
-#         else:
-#             neg.append(nums[i])
-#     result=[]
-#     for i in range(len(pos)):#merging neg and pos array
-#         result.append(pos[i])
-#         result.append(neg[i])    
-#     print(result)
-#     print(pos)
-#     print(neg)
-# nums= [3, 1, -2, -5, 2, -4]
-# fun(nums)
+def fun(nums):
+    n=len(nums)
+    pos=[]
+    neg=[]
+    for i in range(len(nums)):#separating pos and neg numbers
+        if nums[i]>=0:
+            pos.append(nums[i])
+        else:
+            neg.append(nums[i])
+    result=[]
+    for i in range(len(pos)):#merging neg and pos array
+        result.append(pos[i])
+        result.append(neg[i]) 
+    print(pos)
+    print(neg)   
+    print("result through brute force",result)
+nums= [3, 1, -2, -5, 2, -4]
+fun(nums)
 
 #optimal approach 
 def rearrange(nums):
@@ -31,6 +31,6 @@ def rearrange(nums):
         else:
             r[neg_index]=nums[i]
             neg_index+=2
-    print(r)
+    print("result through optimal approach",r)
 nums= [3, 1, -2, -5, 2, -4]
 rearrange(nums)
