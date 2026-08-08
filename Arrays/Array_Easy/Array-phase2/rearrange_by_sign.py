@@ -1,4 +1,5 @@
-def fun(nums):
+#brute force 
+# def fun(nums):
 #     n=len(nums)
 #     pos=[]
 #     neg=[]
@@ -16,3 +17,20 @@ def fun(nums):
 #     print(neg)
 # nums= [3, 1, -2, -5, 2, -4]
 # fun(nums)
+
+#optimal approach 
+def rearrange(nums):
+    n=len(nums)
+    r=[0]*n
+    pos_index=0
+    neg_index=1
+    for i in range(n):
+        if nums[i]>0:
+            r[pos_index]=nums[i]
+            pos_index+=2
+        else:
+            r[neg_index]=nums[i]
+            neg_index+=2
+    print(r)
+nums= [3, 1, -2, -5, 2, -4]
+rearrange(nums)
