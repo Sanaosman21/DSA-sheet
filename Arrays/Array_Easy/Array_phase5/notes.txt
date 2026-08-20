@@ -1,0 +1,668 @@
+📌 Prefix Sum — Complete Notes
+1. What is Prefix Sum?
+
+Prefix sum means:
+
+Store the cumulative/running sum up to each position.
+
+Example:
+
+nums = [2, 3, 1, 4]
+
+
+prefix = [2, 5, 6, 10]
+
+Because:
+
+2
+2 + 3 = 5
+2 + 3 + 1 = 6
+2 + 3 + 1 + 4 = 10
+2. Why do we use Prefix Sum?
+
+The main purpose is to calculate range/subarray sums quickly.
+
+Without prefix sum:
+
+left → right
+
+you may have to repeatedly loop through the elements.
+
+With prefix sum:
+
+sum(left...right)
+= prefix[right] - prefix[left-1]
+The safer version
+
+If you create:
+
+prefix = [0]
+
+then:
+
+prefix[i+1] = sum of nums[0...i]
+
+So:
+
+sum(left, right) = prefix[right + 1] - prefix[left]
+Example
+nums   = [2, 3, 1, 4]
+prefix = [0, 2, 5, 6, 10]
+
+Query:
+
+left = 1
+right = 3
+
+We want:
+
+3 + 1 + 4 = 8
+
+Using prefix:
+
+prefix[4] - prefix[1]
+= 10 - 2
+= 8
+🧠 Remember the logic
+big range
+    ↓
+remove everything before left
+    ↓
+remaining = left...right
+3. Running Sum
+LeetCode 1480
+
+LeetCode 1480 — Running Sum of 1d Array
+
+Example:
+
+nums = [3, 1, 2, 10, 1]
+
+Output:
+
+[3, 4, 6, 16, 17]
+
+Logic:
+
+current += nums[i]
+
+Then:
+
+prefix.append(current)
+Pattern
+current = 0
+
+
+for num in nums:
+    current += num
+4. Prefix Sum with a Separate Array
+
+You can create:
+
+prefix = [0]
+
+Then:
+
+current = 0
+
+
+for num in nums:
+    current += num
+    prefix.append(current)
+
+Example:
+
+nums:
+[1, 7, 3, 6, 5, 6]
+
+
+prefix:
+[0, 1, 8, 11, 17, 22, 28]
+
+Notice:
+
+prefix[0] = 0
+prefix[1] = nums[0]
+prefix[2] = nums[0] + nums[1]
+...
+
+This makes range queries very easy.
+
+5. Pivot Index
+LeetCode 724
+
+LeetCode 724 — Find Pivot Index
+
+We want:
+
+left_sum == right_sum
+
+Example:
+
+[1, 7, 3, 6, 5, 6]
+          ↑
+
+At index 3:
+
+left = 1 + 7 + 3 = 11
+
+
+right = 5 + 6 = 11
+Using prefix
+left = prefix[i]
+right = total - left - nums[i]
+
+Why?
+
+total
+= left + nums[i] + right
+
+Therefore:
+
+right = total - left - nums[i]
+Important
+
+You don't actually need a prefix array here.
+
+You can do it with one loop:
+
+total = sum(nums)
+left = 0
+
+
+for i in range(len(nums)):
+
+
+    right = total - left - nums[i]
+
+
+    if left == right:
+        return i
+
+
+    left += nums[i]
+
+
+return -1
+
+Time: O(n)
+Space: O(1)
+
+6. Prefix Sum + HashMap
+
+This is the most important pattern you've learned.
+
+It is used when the question says something like:
+
+Count/find subarrays with a particular sum/property.
+
+The key equation is:
+
+current_prefix - earlier_prefix = target
+
+Rearrange:
+
+earlier_prefix = current_prefix - target
+
+Therefore:
+
+needed = prefix_sum - k
+7. LeetCode 560 — Subarray Sum Equals K
+
+LeetCode 560 — Subarray Sum Equals K
+
+We want:
+
+Number of subarrays whose sum = k.
+
+Core idea
+current_prefix - earlier_prefix = k
+
+Therefore:
+
+earlier_prefix = current_prefix - k
+
+So:
+
+needed = prefix_sum - k
+
+Then:
+
+count += freq[needed]
+Why frequency?
+
+Because the same prefix sum may occur multiple times.
+
+Each occurrence can create a different valid subarray.
+
+Initialization
+freq = {0: 1}
+
+Meaning:
+
+We've seen prefix sum 0 once before the array starts.
+
+Pattern
+prefix_sum
+    ↓
+needed = prefix_sum - k
+    ↓
+check hashmap
+    ↓
+count += frequency
+    ↓
+store current prefix
+Complexity
+Time  = O(n)
+Space = O(n)
+8. LeetCode 930 — Binary Subarrays With Sum
+
+LeetCode 930 — Binary Subarrays With Sum
+
+This is basically 560 again.
+
+Instead of:
+
+sum = k
+
+we have:
+
+binary array sum = goal
+
+Same exact pattern:
+
+needed = prefix_sum - goal
+
+And:
+
+freq = {0: 1}
+🧠 Pattern recognition
+
+When you see:
+
+Count subarrays whose sum equals K
+
+immediately think:
+
+Prefix Sum + Frequency HashMap
+9. LeetCode 1248 — Count Number of Nice Subarrays
+
+LeetCode 1248 — Count Number of Nice Subarrays
+
+Problem:
+
+Count subarrays containing exactly k odd numbers.
+
+We don't care about the actual values.
+
+Transform:
+
+odd  → 1
+even → 0
+
+Example:
+
+[2, 1, 4, 3, 6]
+
+becomes:
+
+[0, 1, 0, 1, 0]
+
+Now the problem becomes:
+
+Count subarrays whose sum = k.
+
+So again:
+
+needed = prefix_sum - k
+
+Same 560 pattern.
+
+Important insight
+
+Sometimes prefix sum isn't directly about the original values.
+
+We can transform the problem into a prefix-sum problem.
+
+10. LeetCode 525 — Contiguous Array
+
+LeetCode 525 — Contiguous Array
+
+Problem:
+
+Find the longest subarray containing equal numbers of 0 and 1.
+
+Transform:
+
+0 → -1
+1 → +1
+
+Why?
+
+Because:
+
+one 0 + one 1
+= -1 + 1
+= 0
+
+Therefore:
+
+Equal number of 0s and 1s → subarray sum = 0.
+
+Important difference from 560
+
+560 asks:
+
+How many?
+
+So we store:
+
+prefix_sum → frequency
+
+525 asks:
+
+Longest?
+
+So we store:
+
+prefix_sum → first index
+
+Initialization:
+
+freq = {0: -1}
+Why -1?
+
+It represents the position before the array starts.
+
+If the current index is 3 and prefix sum 0 was first seen at -1:
+
+length = 3 - (-1)
+       = 4
+Key rule
+Counting → frequency
+Longest → first index
+11. LeetCode 974 — Subarrays Divisible by K
+
+LeetCode 974 — Subarray Sums Divisible by K
+
+Now we're not looking for:
+
+sum == k
+
+We're looking for:
+
+sum % k == 0
+
+The trick:
+
+If two prefix sums have the same remainder, their difference is divisible by k.
+
+Example:
+
+17 % 5 = 2
+7 % 5  = 2
+
+Then:
+
+17 - 7 = 10
+10 % 5 = 0
+
+Therefore, store:
+
+remainder → frequency
+Initialization
+freq = {0: 1}
+
+Because:
+
+0 % k = 0
+
+And 0 is divisible by every non-zero integer.
+
+Pattern
+prefix_sum += nums[i]
+
+
+remainder = prefix_sum % k
+
+
+if remainder in freq:
+    count += freq[remainder]
+
+
+freq[remainder] += 1
+12. Prefix XOR — Same Pattern, Different Operation
+
+This is the XOR version of prefix sum.
+
+Instead of:
+
++
+
+we use:
+
+^
+
+Important XOR properties:
+
+a ^ a = 0
+a ^ 0 = a
+
+For a subarray XOR:
+
+current_prefix_xor ^ earlier_prefix_xor
+= subarray_xor
+
+If target XOR is K:
+
+current_prefix_xor ^ earlier_prefix_xor = K
+
+Therefore:
+
+earlier_prefix_xor
+= current_prefix_xor ^ K
+
+So:
+
+needed = prefix_xor ^ k
+This is the XOR equivalent of 560
+
+Sum:
+
+needed = prefix_sum - k
+
+XOR:
+
+needed = prefix_xor ^ k
+
+And again:
+
+freq = {0: 1}
+
+Then:
+
+prefix XOR
+     ↓
+needed = prefix XOR ^ K
+     ↓
+check frequency
+     ↓
+count
+     ↓
+store prefix XOR
+13. Count Subarrays with Given XOR K
+
+This is the problem you're currently moving toward.
+
+Example:
+
+nums = [4, 2, 2, 6, 4]
+k = 6
+
+We want:
+
+XOR of subarray = 6
+
+Use:
+
+prefix_xor ^= num
+needed = prefix_xor ^ k
+
+Then:
+
+count += freq[needed]
+
+And finally:
+
+freq[prefix_xor] += 1
+Complexity
+Time  = O(n)
+Space = O(n)
+14. The Most Important HashMap Initializations
+
+This is where you were getting confused earlier, so keep this table:
+
+Problem type	HashMap
+Count subarrays with sum K	{0: 1}
+Count subarrays with XOR K	{0: 1}
+Count subarrays with remainder	{0: 1}
+Longest zero-sum/equal condition	{0: -1}
+Why?
+
+{0: 1}:
+
+prefix/remainder/XOR 0 has appeared once
+
+Used for counting.
+
+{0: -1}:
+
+prefix sum 0 existed before the array at index -1
+
+Used for length.
+
+15. The Big Prefix-Sum Pattern Map 🧠
+
+When you see:
+
+A. "Range sum"
+
+Think:
+
+prefix[right + 1] - prefix[left]
+B. "Count subarrays with sum K"
+
+Think:
+
+needed = prefix - K
+
+and:
+
+prefix → frequency
+C. "Longest subarray with sum/property"
+
+Think:
+
+prefix → first index
+D. "Subarray divisible by K"
+
+Think:
+
+prefix % K
+
+and:
+
+remainder → frequency
+E. "Count subarrays with XOR K"
+
+Think:
+
+needed = prefix_xor ^ K
+
+and:
+
+prefix_xor → frequency
+F. "Equal number of 0s and 1s"
+
+Transform:
+
+0 → -1
+1 → +1
+
+Then find:
+
+longest zero-sum subarray
+G. "Exactly K odd numbers"
+
+Transform:
+
+odd → 1
+even → 0
+
+Then:
+
+count subarrays with sum K
+16. The Golden Formula
+
+The most important idea is not a formula.
+
+It's this:
+
+Subarray = difference between two prefixes
+
+For normal sum:
+
+current_prefix - previous_prefix
+
+For XOR:
+
+current_prefix_xor ^ previous_prefix_xor
+
+For modulo:
+
+same remainder
+
+Once you understand this, you don't need to memorize 20 different solutions.
+
+17. How to Recognize Prefix Sum Problems
+
+Look for words like:
+
+subarray
+contiguous
+sum
+range
+count
+longest
+exactly K
+divisible
+equal number
+XOR
+
+Especially:
+
+"Count the number of contiguous subarrays..."
+
+🚨 Immediately ask yourself:
+
+Can I represent this condition using a prefix value?
+
+18. Your Current Pattern Progression
+
+You've essentially gone through:
+
+                 PREFIX SUM
+                     │
+       ┌─────────────┼─────────────┐
+       ↓             ↓             ↓
+   Range Sum      Subarrays      Transform
+       │             │             │
+      303          560/930       525/1248
+                     │
+          ┌──────────┼──────────┐
+          ↓          ↓          ↓
+        Exact K   Divisible    XOR
+          │          │           │
+         560        974        XOR K
+
+That's a very solid 1D prefix-sum foundation. 🔥
